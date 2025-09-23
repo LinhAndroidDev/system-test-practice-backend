@@ -1,14 +1,20 @@
 package net.javaguides.springboot.service;
 
+import net.javaguides.springboot.dto.ExamRequest;
 import net.javaguides.springboot.dto.QuestionRequest;
 import net.javaguides.springboot.dto.SubjectRequest;
+import net.javaguides.springboot.entity.Exam;
 import net.javaguides.springboot.entity.Question;
 import net.javaguides.springboot.entity.Subject;
+import net.javaguides.springboot.mapper.ExamMapper;
 import net.javaguides.springboot.mapper.QuestionMapper;
+import net.javaguides.springboot.repository.ExamRepository;
 import net.javaguides.springboot.repository.QuestionRepository;
 import net.javaguides.springboot.repository.SubjectRepository;
+import net.javaguides.springboot.response.ExamResponse;
 import net.javaguides.springboot.response.QuestionResponse;
 import net.javaguides.springboot.utils.Constants;
+import net.javaguides.springboot.utils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +29,9 @@ public class ExamService {
 
     @Autowired
     QuestionRepository questionRepository;
+
+    @Autowired
+    ExamRepository examRepository;
 
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
@@ -91,5 +100,48 @@ public class ExamService {
             questionRepository.save(question);
             return Constants.SUCCESS;
         }).orElse(Constants.FAILURE);
+    }
+
+    public List<ExamResponse.ExamData> getAllExams() {
+        return examRepository.findAll().stream().map(exam -> {
+            Subject subjectExam = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
+            List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
+            List<QuestionResponse.QuestionData> questionData = idQuestions.stream().map(id -> {
+                Question question = questionRepository.findById((long) id).orElse(new Question());
+                Subject subjectQuestion = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
+                return QuestionMapper.toQuestionData(question, subjectQuestion);
+            }).toList();
+            return ExamMapper.toExamData(exam, subjectExam, questionData);
+        }).collect(Collectors.toList());
+    }
+
+    public int addExam(ExamRequest examRequest) {
+        if (examRepository.findByTitle(examRequest.getTitle()).isPresent()) {
+            return Constants.DATA_CONFLICT;
+        }
+
+        Exam exam = new Exam();
+        ExamMapper.toEntity(examRequest, exam);
+        examRepository.save(exam);
+        return Constants.SUCCESS;
+    }
+
+    public int deleteExam(Long id) {
+        if (examRepository.findById(id).isPresent()) {
+            examRepository.deleteById(id);
+            return Constants.SUCCESS;
+        }
+
+        return Constants.FAILURE;
+    }
+
+    public int updateExam(ExamRequest examRequest) {
+        return examRepository.findById(examRequest.getId())
+                .map(exam -> {
+                    ExamMapper.toEntity(examRequest, exam);
+                    examRepository.save(exam);
+                    return Constants.SUCCESS;
+                })
+                .orElse(Constants.FAILURE);
     }
 }
