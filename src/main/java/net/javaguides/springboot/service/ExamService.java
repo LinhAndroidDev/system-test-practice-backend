@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class ExamService {
 
     @Autowired
-    private SubjectRepository subjectRepository;
+    SubjectRepository subjectRepository;
 
     @Autowired
     QuestionRepository questionRepository;
