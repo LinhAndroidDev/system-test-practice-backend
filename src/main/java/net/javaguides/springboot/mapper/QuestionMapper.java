@@ -14,6 +14,7 @@ public class QuestionMapper {
         question.setOption_c(request.getOption_c());
         question.setOption_d(request.getOption_d());
         question.setCorrect_answer(request.getCorrect_answer());
+        question.setExplanation(request.getExplanation());
     }
 
     public static QuestionResponse.QuestionData toQuestionData(Question question, Subject subject) {
@@ -26,6 +27,7 @@ public class QuestionMapper {
         data.setOption_c(question.getOption_c());
         data.setOption_d(question.getOption_d());
         data.setCorrect_answer(question.getCorrect_answer());
+        data.setExplanation(question.getExplanation());
         return data;
     }
 }
