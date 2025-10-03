@@ -1,11 +1,9 @@
 package net.javaguides.springboot.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "exam_answers")
 public class ExamAnswer {
@@ -13,7 +11,12 @@ public class ExamAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int result_id;
-    private int question_id;
-    private int chosen_answer;
+    @Column(name = "result_id")
+    private int resultId;
+
+    @Column(name = "question_id")
+    private int questionId;
+
+    @Column(name = "chosen_answer")
+    private int chosenAnswer;
 }

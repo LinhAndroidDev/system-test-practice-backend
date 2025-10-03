@@ -1,15 +1,13 @@
 package net.javaguides.springboot.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import net.javaguides.springboot.entity.Subject;
 
 import java.util.List;
 
 public class QuestionResponse extends BaseResponse<List<QuestionResponse.QuestionData>> {
 
-    @Getter
-    @Setter
+    @Data
     public static class QuestionData {
         private Long id;
         private Subject subject;

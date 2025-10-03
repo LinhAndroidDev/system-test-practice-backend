@@ -1,11 +1,9 @@
 package net.javaguides.springboot.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "subject")
 public class Subject {

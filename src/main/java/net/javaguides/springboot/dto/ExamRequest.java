@@ -1,10 +1,8 @@
 package net.javaguides.springboot.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ExamRequest {
     private Long id;
 

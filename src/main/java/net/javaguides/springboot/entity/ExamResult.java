@@ -1,13 +1,11 @@
 package net.javaguides.springboot.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "exam_results")
 public class ExamResult {
@@ -15,8 +13,18 @@ public class ExamResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int exam_id;
-    private int user_id;
-    private Float score;
-    private LocalDateTime submitted_at;
+    @Column(name = "exam_id")
+    private int examId;
+
+    @Column(name = "user_id")
+    private int userId;
+
+    @Column(name = "number_correct_answers")
+    private int numberCorrectAnswers;
+
+    @Column(name = "total_questions")
+    private int totalQuestions;
+
+    @Column(name = "submitted_at")
+    private LocalDateTime submittedAt;
 }

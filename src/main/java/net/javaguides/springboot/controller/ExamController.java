@@ -2,7 +2,6 @@ package net.javaguides.springboot.controller;
 
 import net.javaguides.springboot.dto.ExamRequest;
 import net.javaguides.springboot.response.ExamResponse;
-import net.javaguides.springboot.response.QuestionResponse;
 import net.javaguides.springboot.service.ExamService;
 import net.javaguides.springboot.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,8 @@
 package net.javaguides.springboot.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public abstract class BaseResponse<T> {
     private T data;
     private String message;
