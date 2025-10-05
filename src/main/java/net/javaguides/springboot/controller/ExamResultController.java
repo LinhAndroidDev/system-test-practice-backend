@@ -1,7 +1,6 @@
 package net.javaguides.springboot.controller;
 
 import net.javaguides.springboot.dto.ExamResultRequest;
-import net.javaguides.springboot.response.ExamResponse;
 import net.javaguides.springboot.response.ExamResultResponse;
 import net.javaguides.springboot.service.ExamResultService;
 import net.javaguides.springboot.utils.Constants;
@@ -11,15 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/exam_result")
-public class ExamResultController {
+public class ExamResultController extends BaseController<ExamResultResponse, List<ExamResultResponse.ExamResultData>> {
 
     @Autowired
     private ExamResultService examResultService;
+
+    protected ExamResultController(Class<ExamResultResponse> responseClass) {
+        super(responseClass);
+    }
 
     @RequestMapping("/get_exam_results")
     ResponseEntity<?> getAllExamResults() {
@@ -74,21 +76,5 @@ public class ExamResultController {
         } catch (HttpClientErrorException e) {
             return handleException(e);
         }
-    }
-
-    private ResponseEntity<ExamResultResponse> handleException(HttpClientErrorException e) {
-        ExamResultResponse response = new ExamResultResponse();
-        response.setData(new ArrayList<>());
-        response.setMessage(e.getMessage());
-        response.setStatus(e.getStatusCode().value());
-        return ResponseEntity.ok(response);
-    }
-
-    private ResponseEntity<ExamResultResponse> handleSuccess(List<ExamResultResponse.ExamResultData> examResults, String message, int status) {
-        ExamResultResponse response = new ExamResultResponse();
-        response.setData(examResults);
-        response.setMessage(message);
-        response.setStatus(status);
-        return ResponseEntity.ok(response);
     }
 }

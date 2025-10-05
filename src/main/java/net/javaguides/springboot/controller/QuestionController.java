@@ -9,18 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/question")
-public class QuestionController {
+public class QuestionController extends BaseController<QuestionResponse, List<QuestionResponse.QuestionData>> {
 
     @Autowired
     private ExamService examService;
 
+    protected QuestionController(Class<QuestionResponse> responseClass) {
+        super(responseClass);
+    }
+
     @GetMapping("/get_questions")
-    public ResponseEntity<?> getAllQuestions(){
+    public ResponseEntity<?> getAllQuestions() {
         try {
             List<QuestionResponse.QuestionData> questions = examService.getAllQuestions();
             return handleSuccess(questions, "Success", Constants.SUCCESS);
@@ -30,7 +33,7 @@ public class QuestionController {
     }
 
     @PostMapping("/add_question")
-    public ResponseEntity<?> addQuestion(@RequestBody QuestionRequest questionRequest){
+    public ResponseEntity<?> addQuestion(@RequestBody QuestionRequest questionRequest) {
         try {
             int status = examService.addQuestion(questionRequest);
             List<QuestionResponse.QuestionData> questions = examService.getAllQuestions();
@@ -47,7 +50,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteQuestion(@PathVariable Long id){
+    public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
         try {
             int status = examService.deleteQuestion(id);
             List<QuestionResponse.QuestionData> questions = examService.getAllQuestions();
@@ -64,35 +67,19 @@ public class QuestionController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateQuestion(@RequestBody QuestionRequest questionRequest){
+    public ResponseEntity<?> updateQuestion(@RequestBody QuestionRequest questionRequest) {
         try {
             int status = examService.updateQuestion(questionRequest);
             List<QuestionResponse.QuestionData> questions = examService.getAllQuestions();
             String message;
             if (status == Constants.FAILURE) {
                 message = "Question not found";
-            } else  {
+            } else {
                 message = "Question updated successfully";
             }
             return handleSuccess(questions, message, status);
         } catch (HttpClientErrorException e) {
             return handleException(e);
         }
-    }
-
-    private ResponseEntity<QuestionResponse> handleException(HttpClientErrorException e) {
-        QuestionResponse response = new QuestionResponse();
-        response.setData(new ArrayList<>());
-        response.setMessage(e.getMessage());
-        response.setStatus(e.getStatusCode().value());
-        return ResponseEntity.ok(response);
-    }
-
-    private ResponseEntity<QuestionResponse> handleSuccess(List<QuestionResponse.QuestionData> questions, String message, int status) {
-        QuestionResponse response = new QuestionResponse();
-        response.setData(questions);
-        response.setMessage(message);
-        response.setStatus(status);
-        return ResponseEntity.ok(response);
     }
 }

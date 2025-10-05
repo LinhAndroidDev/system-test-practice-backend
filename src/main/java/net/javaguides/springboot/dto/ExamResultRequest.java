@@ -2,6 +2,8 @@ package net.javaguides.springboot.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ExamResultRequest {
     private Long id;
@@ -11,4 +13,5 @@ public class ExamResultRequest {
     private int numberCorrectAnswers;
     private int totalQuestions;
     private String submittedAt;
+    private List<ExamAnswerRequest> examAnswers;
 }

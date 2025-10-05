@@ -10,15 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/subject")
-public class SubjectController {
+public class SubjectController extends BaseController<SubjectResponse, List<Subject>> {
 
     @Autowired
     private ExamService examService;
+
+    protected SubjectController(Class<SubjectResponse> responseClass) {
+        super(responseClass);
+    }
 
     @GetMapping("/get_subjects")
     public ResponseEntity<?> getAllSubjects() {
@@ -79,21 +82,5 @@ public class SubjectController {
         } catch (HttpClientErrorException e) {
             return handleException(e);
         }
-    }
-
-    private ResponseEntity<SubjectResponse> handleException(HttpClientErrorException e) {
-        SubjectResponse response = new SubjectResponse();
-        response.setData(new ArrayList<>());
-        response.setMessage(e.getMessage());
-        response.setStatus(e.getStatusCode().value());
-        return ResponseEntity.ok(response);
-    }
-
-    private ResponseEntity<SubjectResponse> handleSuccess(List<Subject> subjects, String message, int status) {
-        SubjectResponse response = new SubjectResponse();
-        response.setData(subjects);
-        response.setMessage(message);
-        response.setStatus(status);
-        return ResponseEntity.ok(response);
     }
 }

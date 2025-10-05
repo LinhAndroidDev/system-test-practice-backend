@@ -74,6 +74,14 @@ public class ExamService {
         }).collect(Collectors.toList());
     }
 
+    public List<QuestionResponse.QuestionData> getAllQuestionsByIds(List<Integer> idQuestions, Long subjectId) {
+        return idQuestions.stream().map(id -> {
+            Question question = questionRepository.findById((long) id).orElse(new Question());
+            Subject subjectQuestion = subjectRepository.findById(subjectId).orElse(new Subject());
+            return QuestionMapper.toQuestionData(question, subjectQuestion);
+        }).toList();
+    }
+
     public int addQuestion(QuestionRequest questionRequest) {
         if (questionRepository.findByContent(questionRequest.getContent()).isPresent()) {
             return Constants.DATA_CONFLICT;
@@ -106,13 +114,19 @@ public class ExamService {
         return examRepository.findAll().stream().map(exam -> {
             Subject subjectExam = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
             List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
-            List<QuestionResponse.QuestionData> questionData = idQuestions.stream().map(id -> {
-                Question question = questionRepository.findById((long) id).orElse(new Question());
-                Subject subjectQuestion = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
-                return QuestionMapper.toQuestionData(question, subjectQuestion);
-            }).toList();
+            List<QuestionResponse.QuestionData> questionData = getAllQuestionsByIds(idQuestions, (long) exam.getSubject_id());
             return ExamMapper.toExamData(exam, subjectExam, questionData);
         }).collect(Collectors.toList());
+    }
+
+    public ExamResponse.ExamData getExamById(int examId) {
+        Exam exam = examRepository.findById((long) examId).orElse(new Exam());
+        ExamResponse.ExamData examData = new ExamResponse.ExamData();
+        Subject subjectExam = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
+        List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
+        List<QuestionResponse.QuestionData> questionData = getAllQuestionsByIds(idQuestions, (long) exam.getSubject_id());
+        ExamMapper.toExamData(exam, subjectExam, questionData);
+        return examData;
     }
 
     public int addExam(ExamRequest examRequest) {

@@ -9,15 +9,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/exam")
-public class ExamController {
+public class ExamController extends BaseController<ExamResponse, List<ExamResponse.ExamData>> {
 
     @Autowired
     private ExamService examService;
+
+    protected ExamController(Class<ExamResponse> responseClass) {
+        super(responseClass);
+    }
 
     @GetMapping("/get_exams")
     ResponseEntity<?> getAllExams() {
@@ -78,21 +81,5 @@ public class ExamController {
         } catch (HttpClientErrorException e) {
             return handleException(e);
         }
-    }
-
-    private ResponseEntity<ExamResponse> handleException(HttpClientErrorException e) {
-        ExamResponse response = new ExamResponse();
-        response.setData(new ArrayList<>());
-        response.setMessage(e.getMessage());
-        response.setStatus(e.getStatusCode().value());
-        return ResponseEntity.ok(response);
-    }
-
-    private ResponseEntity<ExamResponse> handleSuccess(List<ExamResponse.ExamData> exams, String message, int status) {
-        ExamResponse response = new ExamResponse();
-        response.setData(exams);
-        response.setMessage(message);
-        response.setStatus(status);
-        return ResponseEntity.ok(response);
     }
 }

@@ -16,6 +16,7 @@ public interface ExamResultMapper {
     ExamResult toEntity(ExamResultRequest request);
 
     @Mapping(source = "examData", target = "exam")
+    @Mapping(source = "examResult.id", target = "id")
     @Mapping(source = "examResult.submittedAt", target = "submittedAt", qualifiedByName = "dateToString")
     ExamResultResponse.ExamResultData toExamResultData(
             ExamResult examResult, ExamResponse.ExamData examData
