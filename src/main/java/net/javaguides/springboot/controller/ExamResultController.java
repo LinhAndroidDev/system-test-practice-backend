@@ -19,8 +19,8 @@ public class ExamResultController extends BaseController<ExamResultResponse, Lis
     @Autowired
     private ExamResultService examResultService;
 
-    protected ExamResultController(Class<ExamResultResponse> responseClass) {
-        super(responseClass);
+    public ExamResultController() {
+        super(ExamResultResponse.class);
     }
 
     @RequestMapping("/get_exam_results")

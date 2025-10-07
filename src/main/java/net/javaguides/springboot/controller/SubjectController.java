@@ -19,8 +19,8 @@ public class SubjectController extends BaseController<SubjectResponse, List<Subj
     @Autowired
     private ExamService examService;
 
-    protected SubjectController(Class<SubjectResponse> responseClass) {
-        super(responseClass);
+    public SubjectController() {
+        super(SubjectResponse.class);
     }
 
     @GetMapping("/get_subjects")

@@ -16,8 +16,8 @@ public class ExamAnswerController extends BaseController<ExamAnswerResponse, Exa
     @Autowired
     ExamResultService examResultService;
 
-    protected ExamAnswerController(Class<ExamAnswerResponse> responseClass) {
-        super(responseClass);
+    public ExamAnswerController() {
+        super(ExamAnswerResponse.class);
     }
 
     @GetMapping("/get_exam_answers/{examResultId}")

@@ -18,8 +18,8 @@ public class ExamController extends BaseController<ExamResponse, List<ExamRespon
     @Autowired
     private ExamService examService;
 
-    protected ExamController(Class<ExamResponse> responseClass) {
-        super(responseClass);
+    public ExamController() {
+        super(ExamResponse.class);
     }
 
     @GetMapping("/get_exams")

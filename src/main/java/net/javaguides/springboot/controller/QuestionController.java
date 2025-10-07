@@ -18,8 +18,8 @@ public class QuestionController extends BaseController<QuestionResponse, List<Qu
     @Autowired
     private ExamService examService;
 
-    protected QuestionController(Class<QuestionResponse> responseClass) {
-        super(responseClass);
+    public QuestionController() {
+        super(QuestionResponse.class);
     }
 
     @GetMapping("/get_questions")
