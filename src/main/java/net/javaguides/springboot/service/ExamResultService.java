@@ -35,9 +35,6 @@ public class ExamResultService {
     SubjectRepository subjectRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
-
-    @Autowired
     ExamAnswerRepository examAnswerRepository;
 
     @Autowired
@@ -47,14 +44,15 @@ public class ExamResultService {
 
     private final ExamAnswerMapper examAnswerMapper;
 
+    private final ExamMapper examMapper;
+
     public List<ExamResultResponse.ExamResultData> getAllExamResults() {
         return examResultRepository.findAll().stream().map(examResult -> {
             Exam exam = examRepository.findById((long) examResult.getExamId()).orElse(new Exam());
-            ExamResponse.ExamData examData = new ExamResponse.ExamData();
-            Subject subjectExam = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
+            Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());
             List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
             List<QuestionResponse.QuestionData> questionData = examService.getAllQuestionsByIds(idQuestions, subjectExam.getId());
-            ExamMapper.toExamData(exam, subjectExam, questionData);
+            ExamResponse.ExamData examData = examMapper.toExamData(exam, subjectExam, questionData);
 
             return examResultMapper.toExamResultData(examResult, examData);
         }).toList();

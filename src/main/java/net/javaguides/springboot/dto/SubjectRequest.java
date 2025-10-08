@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class SubjectRequest {
     private Long id;
-    private String name_subject;
+    private String nameSubject;
 }

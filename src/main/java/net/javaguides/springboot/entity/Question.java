@@ -11,13 +11,27 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int subject_id;
+    @Column(name = "subject_id")
+    private int subjectId;
+
+    @Column(name = "content")
     private String content;
-    private String option_a;
-    private String option_b;
-    private String option_c;
-    private String option_d;
-    private int correct_answer;
-    @Column(columnDefinition = "TEXT")
+
+    @Column(name = "option_a")
+    private String optionA;
+
+    @Column(name = "option_b")
+    private String optionB;
+
+    @Column(name = "option_c")
+    private String optionC;
+
+    @Column(name = "option_d")
+    private String optionD;
+
+    @Column(name = "correct_answer")
+    private int correctAnswer;
+
+    @Column(name = "explanation", columnDefinition = "TEXT")
     private String explanation;
 }

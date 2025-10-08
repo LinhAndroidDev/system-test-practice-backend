@@ -6,8 +6,8 @@ import lombok.Data;
 public class ExamRequest {
     private Long id;
 
-    private int subject_id;
+    private int subjectId;
     private String title;
-    private int duration_seconds;
+    private int durationSeconds;
     private String questions;
 }

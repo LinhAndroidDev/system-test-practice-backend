@@ -12,11 +12,11 @@ public class QuestionResponse extends BaseResponse<List<QuestionResponse.Questio
         private Long id;
         private Subject subject;
         private String content;
-        private String option_a;
-        private String option_b;
-        private String option_c;
-        private String option_d;
-        private int correct_answer;
+        private String optionA;
+        private String optionB;
+        private String optionC;
+        private String optionD;
+        private int correctAnswer;
         private String explanation;
     }
 }

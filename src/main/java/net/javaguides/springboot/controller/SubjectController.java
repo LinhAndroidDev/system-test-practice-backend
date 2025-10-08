@@ -36,7 +36,7 @@ public class SubjectController extends BaseController<SubjectResponse, List<Subj
     @PostMapping("/add_subject")
     public ResponseEntity<?> addSubject(@RequestBody SubjectRequest subject) {
         try {
-            int status = examService.addSubject(subject.getName_subject());
+            int status = examService.addSubject(subject.getNameSubject());
             List<Subject> subjects = examService.getAllSubjects();
             String message;
             if (status == Constants.DATA_CONFLICT) {

@@ -1,5 +1,6 @@
 package net.javaguides.springboot.service;
 
+import lombok.RequiredArgsConstructor;
 import net.javaguides.springboot.dto.ExamRequest;
 import net.javaguides.springboot.dto.QuestionRequest;
 import net.javaguides.springboot.dto.SubjectRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ExamService {
 
     @Autowired
@@ -32,6 +34,10 @@ public class ExamService {
 
     @Autowired
     ExamRepository examRepository;
+
+    private final QuestionMapper questionMapper;
+
+    private final ExamMapper examMapper;
 
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
@@ -60,7 +66,7 @@ public class ExamService {
     public int updateSubject(SubjectRequest subjectRequest) {
         return subjectRepository.findById(subjectRequest.getId())
                 .map(subject -> {
-                    subject.setNameSubject(subjectRequest.getName_subject());
+                    subject.setNameSubject(subjectRequest.getNameSubject());
                     subjectRepository.save(subject);
                     return Constants.SUCCESS;
                 })
@@ -69,8 +75,8 @@ public class ExamService {
 
     public List<QuestionResponse.QuestionData> getAllQuestions() {
         return questionRepository.findAll().stream().map(question -> {
-            Subject subject = subjectRepository.findById((long) question.getSubject_id()).orElse(new Subject());
-            return QuestionMapper.toQuestionData(question, subject);
+            Subject subject = subjectRepository.findById((long) question.getSubjectId()).orElse(new Subject());
+            return questionMapper.toQuestionData(question, subject);
         }).collect(Collectors.toList());
     }
 
@@ -78,7 +84,7 @@ public class ExamService {
         return idQuestions.stream().map(id -> {
             Question question = questionRepository.findById((long) id).orElse(new Question());
             Subject subjectQuestion = subjectRepository.findById(subjectId).orElse(new Subject());
-            return QuestionMapper.toQuestionData(question, subjectQuestion);
+            return questionMapper.toQuestionData(question, subjectQuestion);
         }).toList();
     }
 
@@ -87,9 +93,7 @@ public class ExamService {
             return Constants.DATA_CONFLICT;
         }
 
-        Question question = new Question();
-        QuestionMapper.toEntity(questionRequest, question);
-        questionRepository.save(question);
+        questionRepository.save(questionMapper.toEntity(questionRequest));
         return Constants.SUCCESS;
     }
 
@@ -104,29 +108,26 @@ public class ExamService {
 
     public int updateQuestion(QuestionRequest questionRequest) {
         return questionRepository.findById(questionRequest.getId()).map(question -> {
-            QuestionMapper.toEntity(questionRequest, question);
-            questionRepository.save(question);
+            questionRepository.save(questionMapper.toEntity(questionRequest));
             return Constants.SUCCESS;
         }).orElse(Constants.FAILURE);
     }
 
     public List<ExamResponse.ExamData> getAllExams() {
         return examRepository.findAll().stream().map(exam -> {
-            Subject subjectExam = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
+            Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());
             List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
-            List<QuestionResponse.QuestionData> questionData = getAllQuestionsByIds(idQuestions, (long) exam.getSubject_id());
-            return ExamMapper.toExamData(exam, subjectExam, questionData);
+            List<QuestionResponse.QuestionData> questionData = getAllQuestionsByIds(idQuestions, (long) exam.getSubjectId());
+            return examMapper.toExamData(exam, subjectExam, questionData);
         }).collect(Collectors.toList());
     }
 
     public ExamResponse.ExamData getExamById(int examId) {
         Exam exam = examRepository.findById((long) examId).orElse(new Exam());
-        ExamResponse.ExamData examData = new ExamResponse.ExamData();
-        Subject subjectExam = subjectRepository.findById((long) exam.getSubject_id()).orElse(new Subject());
+        Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());
         List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
-        List<QuestionResponse.QuestionData> questionData = getAllQuestionsByIds(idQuestions, (long) exam.getSubject_id());
-        ExamMapper.toExamData(exam, subjectExam, questionData);
-        return examData;
+        List<QuestionResponse.QuestionData> questionData = getAllQuestionsByIds(idQuestions, (long) exam.getSubjectId());
+        return examMapper.toExamData(exam, subjectExam, questionData);
     }
 
     public int addExam(ExamRequest examRequest) {
@@ -134,9 +135,7 @@ public class ExamService {
             return Constants.DATA_CONFLICT;
         }
 
-        Exam exam = new Exam();
-        ExamMapper.toEntity(examRequest, exam);
-        examRepository.save(exam);
+        examRepository.save(examMapper.toEntity(examRequest));
         return Constants.SUCCESS;
     }
 
@@ -152,8 +151,7 @@ public class ExamService {
     public int updateExam(ExamRequest examRequest) {
         return examRepository.findById(examRequest.getId())
                 .map(exam -> {
-                    ExamMapper.toEntity(examRequest, exam);
-                    examRepository.save(exam);
+                    examRepository.save(examMapper.toEntity(examRequest));
                     return Constants.SUCCESS;
                 })
                 .orElse(Constants.FAILURE);

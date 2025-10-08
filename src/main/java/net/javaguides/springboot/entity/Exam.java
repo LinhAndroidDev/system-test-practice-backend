@@ -14,9 +14,16 @@ public class Exam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int subject_id;
+    @Column(name = "subject_id")
+    private int subjectId;
+
+    @Column(name = "title")
     private String title;
-    private int duration_seconds;
+
+    @Column(name = "duration_seconds")
+    private int durationSeconds;
+
+    @Column(name = "questions")
     private String questions;
 
     @CreationTimestamp   // tự động set thời gian khi insert

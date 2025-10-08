@@ -5,12 +5,12 @@ import lombok.Data;
 @Data
 public class QuestionRequest {
     private Long id;
-    private int subject_id;
+    private int subjectId;
     private String content;
-    private String option_a;
-    private String option_b;
-    private String option_c;
-    private String option_d;
-    private int correct_answer;
+    private String optionA;
+    private String optionB;
+    private String optionC;
+    private String optionD;
+    private int correctAnswer;
     private String explanation;
 }

@@ -13,8 +13,8 @@ public class ExamResponse extends BaseResponse<List<ExamResponse.ExamData>> {
 
         private Subject subject;
         private String title;
-        private int duration_seconds;
+        private int durationSeconds;
         private List<QuestionResponse.QuestionData> questions;
-        private String created_at;
+        private String createdAt;
     }
 }

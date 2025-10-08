@@ -5,26 +5,26 @@ import net.javaguides.springboot.entity.Exam;
 import net.javaguides.springboot.entity.Subject;
 import net.javaguides.springboot.response.ExamResponse;
 import net.javaguides.springboot.response.QuestionResponse;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-public class ExamMapper {
-    public static void toEntity(ExamRequest request, Exam exam) {
-        exam.setId(request.getId());
-        exam.setSubject_id(request.getSubject_id());
-        exam.setTitle(request.getTitle());
-        exam.setDuration_seconds(request.getDuration_seconds());
-        exam.setQuestions(request.getQuestions());
-    }
+@Mapper(componentModel = "spring")
+public interface ExamMapper {
+    @Mapping(target = "createdAt", ignore = true)
+    Exam toEntity(ExamRequest request);
 
-    public static ExamResponse.ExamData toExamData(Exam exam, Subject subject, List<QuestionResponse.QuestionData> questions) {
-        ExamResponse.ExamData examData = new ExamResponse.ExamData();
-        examData.setId(exam.getId());
-        examData.setSubject(subject);
-        examData.setTitle(exam.getTitle());
-        examData.setDuration_seconds(exam.getDuration_seconds());
-        examData.setQuestions(questions);
-        examData.setCreated_at(exam.getCreatedAt().toString());
-        return examData;
+    @Mapping(source = "exam.id", target = "id")
+    @Mapping(source = "subject", target = "subject")
+    @Mapping(source = "questions", target = "questions")
+    @Mapping(source = "exam.createdAt", target = "createdAt", qualifiedByName = "dateToString")
+    ExamResponse.ExamData toExamData(Exam exam, Subject subject, List<QuestionResponse.QuestionData> questions);
+
+    @Named("dateToString")
+    default String dateToString(LocalDateTime date) {
+        return date == null ? null : date.toString();
     }
 }
