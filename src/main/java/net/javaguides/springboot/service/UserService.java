@@ -13,9 +13,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public String register(String name, String email, String password) {
+    public int register(String name, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) {
-            return "Email already registered!";
+            return 0;
         }
 
         User user = new User();
@@ -23,7 +23,7 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(password);
         userRepository.save(user);
-        return "User registered successfully!";
+        return user.getId().intValue();
     }
 
     public User login(String email, String password) {
