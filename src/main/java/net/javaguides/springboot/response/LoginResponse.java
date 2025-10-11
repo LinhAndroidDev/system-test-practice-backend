@@ -10,6 +10,7 @@ public class LoginResponse extends BaseResponse<LoginResponse.LoginData>{
     public static class LoginData {
         private int userId;
         private String username;
+        private int role;
         private AuthData auth;
     }
 

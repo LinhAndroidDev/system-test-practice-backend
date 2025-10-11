@@ -27,7 +27,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request){
         try {
-            int result = userService.register(request.getName(), request.getEmail(), request.getPassword());
+            int result = userService.register(request);
             RegisterResponse response = getRegisterResponse(result);
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException e) {
@@ -60,9 +60,9 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         try {
             User user = userService.login(request.getEmail(), request.getPassword());
-            String token = jwtUtil.generateToken(user.getName());
+            String token = jwtUtil.generateToken(user.getEmail());
             LoginResponse.AuthData authData = new LoginResponse.AuthData(token);
-            LoginResponse.LoginData loginData = new LoginResponse.LoginData(user.getId().intValue(), user.getName(), authData);
+            LoginResponse.LoginData loginData = new LoginResponse.LoginData(user.getId().intValue(), user.getName(), user.getRole(), authData);
             LoginResponse response = new LoginResponse();
             response.setData(loginData);
             response.setMessage("Login successful!");

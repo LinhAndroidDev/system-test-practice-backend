@@ -1,5 +1,6 @@
 package net.javaguides.springboot.service;
 
+import net.javaguides.springboot.dto.RegisterRequest;
 import net.javaguides.springboot.entity.User;
 import net.javaguides.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public int register(String name, String email, String password) {
-        if (userRepository.findByEmail(email).isPresent()) {
+    public int register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             return 0;
         }
 
         User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
         userRepository.save(user);
         return user.getId().intValue();
     }
