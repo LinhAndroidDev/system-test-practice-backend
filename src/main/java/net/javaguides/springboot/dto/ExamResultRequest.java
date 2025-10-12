@@ -12,6 +12,5 @@ public class ExamResultRequest {
     private int userId;
     private int numberCorrectAnswers;
     private int totalQuestions;
-    private String submittedAt;
     private List<ExamAnswerRequest> examAnswers;
 }

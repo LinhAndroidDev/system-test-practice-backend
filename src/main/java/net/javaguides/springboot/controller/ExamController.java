@@ -32,7 +32,7 @@ public class ExamController extends BaseController<ExamResponse, List<ExamRespon
         }
     }
 
-    @PostMapping("/add_exam")
+    @PostMapping
     ResponseEntity<?> addExam(@RequestBody ExamRequest request) {
         try {
             int status = examService.addExam(request);
@@ -49,7 +49,7 @@ public class ExamController extends BaseController<ExamResponse, List<ExamRespon
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<?> deleteExam(@PathVariable Long id) {
         try {
             int status = examService.deleteExam(id);
@@ -66,7 +66,7 @@ public class ExamController extends BaseController<ExamResponse, List<ExamRespon
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping
     ResponseEntity<?> updateExam(@RequestBody ExamRequest request) {
         try {
             int status = examService.updateExam(request);

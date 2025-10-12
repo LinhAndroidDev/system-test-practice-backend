@@ -6,8 +6,7 @@ import net.javaguides.springboot.service.ExamResultService;
 import net.javaguides.springboot.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class ExamResultController extends BaseController<ExamResultResponse, Lis
         super(ExamResultResponse.class);
     }
 
-    @RequestMapping("/get_exam_results")
+    @GetMapping("/get_exam_results")
     ResponseEntity<?> getAllExamResults() {
         try {
             List<ExamResultResponse.ExamResultData> examResultDataList = examResultService.getAllExamResults();
@@ -33,7 +32,7 @@ public class ExamResultController extends BaseController<ExamResultResponse, Lis
         }
     }
 
-    @RequestMapping("/add_exam_result")
+    @PostMapping
     ResponseEntity<?> addExamResult(ExamResultRequest request) {
         try {
             examResultService.addExamResult(request);
@@ -44,7 +43,7 @@ public class ExamResultController extends BaseController<ExamResultResponse, Lis
         }
     }
 
-    @RequestMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<?> deleteExamResult(Long id) {
         try {
             int status = examResultService.deleteExamResult(id);
@@ -61,7 +60,7 @@ public class ExamResultController extends BaseController<ExamResultResponse, Lis
         }
     }
 
-    @RequestMapping("/update_exam_result")
+    @PutMapping
     ResponseEntity<?> updateExamResult(ExamResultRequest request) {
         try {
             int status = examResultService.updateExamResult(request);

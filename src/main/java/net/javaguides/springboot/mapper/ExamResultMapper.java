@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Mapper(componentModel = "spring")
 public interface ExamResultMapper {
-    @Mapping(source = "submittedAt", target = "submittedAt", qualifiedByName = "stringToDate")
+    @Mapping(target = "submittedAt", ignore = true)
     ExamResult toEntity(ExamResultRequest request);
 
     @Mapping(source = "examData", target = "exam")
@@ -21,11 +21,6 @@ public interface ExamResultMapper {
     ExamResultResponse.ExamResultData toExamResultData(
             ExamResult examResult, ExamResponse.ExamData examData
     );
-
-    @Named("stringToDate")
-    default LocalDateTime stringToDate(String date) {
-        return date == null ? null : LocalDateTime.parse(date);
-    }
 
     @Named("dateToString")
     default String dateToString(LocalDateTime date) {

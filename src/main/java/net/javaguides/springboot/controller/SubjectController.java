@@ -33,7 +33,7 @@ public class SubjectController extends BaseController<SubjectResponse, List<Subj
         }
     }
 
-    @PostMapping("/add_subject")
+    @PostMapping
     public ResponseEntity<?> addSubject(@RequestBody SubjectRequest subject) {
         try {
             int status = examService.addSubject(subject.getNameSubject());
@@ -50,7 +50,7 @@ public class SubjectController extends BaseController<SubjectResponse, List<Subj
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSubject(@PathVariable Long id) {
         try {
             int status = examService.deleteSubject(id);
@@ -67,7 +67,7 @@ public class SubjectController extends BaseController<SubjectResponse, List<Subj
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<?> updateSubject(@RequestBody SubjectRequest subjectRequest) {
         try {
             int status = examService.updateSubject(subjectRequest);

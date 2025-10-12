@@ -2,6 +2,7 @@ package net.javaguides.springboot.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,7 @@ public class ExamResult {
     @Column(name = "total_questions")
     private int totalQuestions;
 
-    @Column(name = "submitted_at")
+    @CreationTimestamp   // tự động set thời gian khi insert
+    @Column(name = "submitted_at", nullable = false, updatable = false)
     private LocalDateTime submittedAt;
 }
