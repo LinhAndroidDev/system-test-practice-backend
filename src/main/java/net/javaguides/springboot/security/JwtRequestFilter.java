@@ -32,28 +32,32 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
+        // Chỉ xử lý token nếu có Authorization header
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+            
+            // Chỉ set authentication nếu token hợp lệ
+            // Nếu token không hợp lệ, để Spring Security quyết định (có thể là public URL)
             if (jwtUtil.validateToken(token)) {
-                // ✅ Lấy email từ token
-                String email = jwtUtil.extractEmail(token);
+                try {
+                    String email = jwtUtil.extractEmail(token);
 
-                // ✅ Kiểm tra context chưa có auth
-                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                    if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails, null, userDetails.getAuthorities());
+                        UsernamePasswordAuthenticationToken authentication =
+                                new UsernamePasswordAuthenticationToken(
+                                        userDetails, null, userDetails.getAuthorities());
 
-                    authentication.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request));
+                        authentication.setDetails(
+                                new WebAuthenticationDetailsSource().buildDetails(request));
 
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                } catch (Exception e) {
+                    // Token hợp lệ nhưng user không tồn tại - để Spring Security xử lý
+                    SecurityContextHolder.clearContext();
                 }
-            } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
             }
         }
 

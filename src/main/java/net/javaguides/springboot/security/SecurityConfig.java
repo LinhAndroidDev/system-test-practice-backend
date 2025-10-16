@@ -23,7 +23,9 @@ public class SecurityConfig {
             "/api/auth/login",
             "/api/subject/get_subjects",
             "/api/question/get_questions",
-            "/api/exam/get_exams"
+            "/api/exam/get_exams",
+            "/api/upload/image",
+            "/api/upload/image/{filename}",
     };
 
     @Autowired
