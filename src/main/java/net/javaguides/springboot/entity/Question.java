@@ -17,6 +17,9 @@ public class Question {
     @Column(name = "content")
     private String content;
 
+//    @Column(name = "content_image")
+    private String contentImage;
+
     @Column(name = "option_a")
     private String optionA;
 

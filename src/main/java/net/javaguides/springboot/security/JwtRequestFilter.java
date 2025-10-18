@@ -37,7 +37,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
             
             // Chỉ set authentication nếu token hợp lệ
-            // Nếu token không hợp lệ, để Spring Security quyết định (có thể là public URL)
             if (jwtUtil.validateToken(token)) {
                 try {
                     String email = jwtUtil.extractEmail(token);

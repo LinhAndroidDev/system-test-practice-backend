@@ -29,7 +29,7 @@ public class UploadController extends BaseController<UploadPhotoResponse, String
     @Value("${supabase.bucket}")
     private String supabaseBucket;
 
-    protected UploadController() {
+    public UploadController() {
         super(UploadPhotoResponse.class);
     }
 
@@ -72,6 +72,36 @@ public class UploadController extends BaseController<UploadPhotoResponse, String
             response.setMessage(e.getMessage());
             response.setStatus(Constants.FAILURE);
             return ResponseEntity.ok(response);
+        }
+    }
+
+    @DeleteMapping("/image")
+    public ResponseEntity<?> deleteImage(@RequestParam("fileName") String fileName) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            // Gửi DELETE request đến Supabase Storage
+            Request request = new Request.Builder()
+                    .url(supabaseUrl + "/storage/v1/object/" + supabaseBucket + "/" + fileName)
+                    .delete()
+                    .addHeader("Authorization", "Bearer " + supabaseKey) // Dùng service key
+                    .addHeader("apikey", supabaseKey)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return handleSuccess(null, "Xóa thành công", Constants.SUCCESS);
+            } else {
+                assert response.body() != null;
+                return handleSuccess(response.body().string(), response.message(), response.code());
+            }
+        } catch (IOException e) {
+            UploadPhotoResponse res = new UploadPhotoResponse();
+            res.setData(null);
+            res.setMessage(e.getMessage());
+            res.setStatus(Constants.FAILURE);
+            return ResponseEntity.ok(res);
         }
     }
 }

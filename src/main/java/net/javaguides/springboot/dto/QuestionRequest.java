@@ -7,6 +7,7 @@ public class QuestionRequest {
     private Long id;
     private int subjectId;
     private String content;
+    private String contentImage;
     private String optionA;
     private String optionB;
     private String optionC;

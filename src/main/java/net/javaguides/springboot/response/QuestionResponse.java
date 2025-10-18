@@ -12,6 +12,7 @@ public class QuestionResponse extends BaseResponse<List<QuestionResponse.Questio
         private Long id;
         private Subject subject;
         private String content;
+        private String contentImage;
         private String optionA;
         private String optionB;
         private String optionC;
