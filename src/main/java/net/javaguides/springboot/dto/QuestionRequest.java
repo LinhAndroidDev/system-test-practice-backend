@@ -14,4 +14,5 @@ public class QuestionRequest {
     private String optionD;
     private int correctAnswer;
     private String explanation;
+    private String explanationImage;
 }

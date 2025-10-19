@@ -19,5 +19,6 @@ public class QuestionResponse extends BaseResponse<List<QuestionResponse.Questio
         private String optionD;
         private int correctAnswer;
         private String explanation;
+        private String explanationImage;
     }
 }

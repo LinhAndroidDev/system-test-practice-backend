@@ -17,7 +17,7 @@ public class Question {
     @Column(name = "content")
     private String content;
 
-//    @Column(name = "content_image")
+    @Column(name = "content_image")
     private String contentImage;
 
     @Column(name = "option_a")
@@ -37,4 +37,7 @@ public class Question {
 
     @Column(name = "explanation", columnDefinition = "TEXT")
     private String explanation;
+
+    @Column(name = "explanation_image")
+    private String explanationImage;
 }
