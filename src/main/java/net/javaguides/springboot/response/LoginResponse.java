@@ -18,5 +18,12 @@ public class LoginResponse extends BaseResponse<LoginResponse.LoginData>{
     @AllArgsConstructor
     public static class AuthData {
         private String accessToken;
+        private String refreshToken;
+        
+        // Constructor cũ để backward compatibility
+        public AuthData(String accessToken) {
+            this.accessToken = accessToken;
+            this.refreshToken = null;
+        }
     }
 }

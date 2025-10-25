@@ -35,4 +35,9 @@ public class UserService {
         }
         throw new RuntimeException("Invalid email or password!");
     }
+    
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
+    }
 }
