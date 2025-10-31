@@ -122,6 +122,15 @@ public class ExamService {
         }).collect(Collectors.toList());
     }
 
+    public List<ExamResponse.ExamData> getAllExamsBySubjectId(Long subjectId) {
+        return examRepository.findBySubjectId(subjectId).orElse(List.of()).stream().map(exam -> {
+            Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());
+            List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
+            List<QuestionResponse.QuestionData> questionData = getAllQuestionsByIds(idQuestions, (long) exam.getSubjectId());
+            return examMapper.toExamData(exam, subjectExam, questionData);
+        }).collect(Collectors.toList());
+    }
+
     public ExamResponse.ExamData getExamById(int examId) {
         Exam exam = examRepository.findById((long) examId).orElse(new Exam());
         Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());

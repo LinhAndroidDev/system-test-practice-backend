@@ -23,9 +23,14 @@ public class ExamController extends BaseController<ExamResponse, List<ExamRespon
     }
 
     @GetMapping("/get_exams")
-    ResponseEntity<?> getAllExams() {
+    ResponseEntity<?> getAllExams(@RequestParam(required = false) Long subjectId) {
         try {
-            List<ExamResponse.ExamData> examDataList = examService.getAllExams();
+            List<ExamResponse.ExamData> examDataList;
+            if (subjectId != null) {
+                examDataList = examService.getAllExamsBySubjectId(subjectId);
+            } else  {
+                examDataList = examService.getAllExams();
+            }
             return handleSuccess(examDataList, "Success", Constants.SUCCESS);
         } catch (HttpClientErrorException e) {
             return handleException(e);
