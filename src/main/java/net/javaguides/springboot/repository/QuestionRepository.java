@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findByContent(String content);
+
+    Optional<Question> findByContentImage(String contentImage);
 }

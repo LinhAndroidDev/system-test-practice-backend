@@ -89,7 +89,8 @@ public class ExamService {
     }
 
     public int addQuestion(QuestionRequest questionRequest) {
-        if (questionRepository.findByContent(questionRequest.getContent()).isPresent()) {
+        if (questionRepository.findByContent(questionRequest.getContent()).isPresent()
+                && questionRepository.findByContentImage(questionRequest.getContentImage()).isPresent()) {
             return Constants.DATA_CONFLICT;
         }
 
