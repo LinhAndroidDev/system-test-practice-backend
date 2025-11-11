@@ -11,6 +11,7 @@ public class ExamResultRequest {
     private int examId;
     private int userId;
     private int numberCorrectAnswers;
+    private int numberWrongAnswers;
     private int totalQuestions;
     private List<ExamAnswerRequest> examAnswers;
 }

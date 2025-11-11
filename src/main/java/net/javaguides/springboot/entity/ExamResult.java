@@ -23,6 +23,9 @@ public class ExamResult {
     @Column(name = "number_correct_answers")
     private int numberCorrectAnswers;
 
+    @Column(name = "number_wrong_answers")
+    private int numberWrongAnswers;
+
     @Column(name = "total_questions")
     private int totalQuestions;
 
