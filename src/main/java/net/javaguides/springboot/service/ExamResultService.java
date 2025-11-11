@@ -9,10 +9,7 @@ import net.javaguides.springboot.mapper.ExamAnswerMapper;
 import net.javaguides.springboot.mapper.ExamMapper;
 import net.javaguides.springboot.mapper.ExamResultMapper;
 import net.javaguides.springboot.repository.*;
-import net.javaguides.springboot.response.ExamAnswerResponse;
-import net.javaguides.springboot.response.ExamResponse;
-import net.javaguides.springboot.response.ExamResultResponse;
-import net.javaguides.springboot.response.QuestionResponse;
+import net.javaguides.springboot.response.*;
 import net.javaguides.springboot.utils.Constants;
 import net.javaguides.springboot.utils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,11 +55,25 @@ public class ExamResultService {
         }).toList();
     }
 
-    public void addExamResult(ExamResultRequest request) {
+    public ExamResultResponse.ExamResultData getExamResultById(Long idResult) {
+        ExamResult examResult = examResultRepository.findById(idResult).orElse(new ExamResult());
+        Exam exam = examRepository.findById((long) examResult.getExamId()).orElse(new Exam());
+        Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());
+        List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
+        List<QuestionResponse.QuestionData> questionData = examService.getAllQuestionsByIds(idQuestions, subjectExam.getId());
+        ExamResponse.ExamData examData = examMapper.toExamData(exam, subjectExam, questionData);
+        return examResultMapper.toExamResultData(examResult, examData);
+    }
+
+    public Long addExamResult(ExamResultRequest request) {
         ExamResult examResult = examResultMapper.toEntity(request);
         examResultRepository.save(examResult);
         Long resultId = examResult.getId();
-        addAllExamAnswers(request.getExamAnswers(), resultId);
+        List<ExamAnswerRequest> examAnswers = request.getExamAnswers();
+        if (examAnswers != null && !examAnswers.isEmpty()) {
+            addAllExamAnswers(examAnswers, resultId);
+        }
+        return resultId;
     }
 
     public int deleteExamResult(Long id) {

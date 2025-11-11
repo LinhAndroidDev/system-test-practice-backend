@@ -2,10 +2,8 @@ package net.javaguides.springboot.response;
 
 import lombok.Data;
 
-import java.util.List;
-
-public class ExamResultResponse extends BaseResponse<List<ExamResultResponse.ExamResultData>>{
-
+public class ExamResultResponse extends BaseResponse<ExamResultResponse.ExamResultData> {
+    
     @Data
     public static class ExamResultData {
         private Long id;

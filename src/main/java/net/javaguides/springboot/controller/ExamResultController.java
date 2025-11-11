@@ -2,6 +2,7 @@ package net.javaguides.springboot.controller;
 
 import net.javaguides.springboot.dto.ExamResultRequest;
 import net.javaguides.springboot.response.ExamResultResponse;
+import net.javaguides.springboot.response.ListExamResultResponse;
 import net.javaguides.springboot.service.ExamResultService;
 import net.javaguides.springboot.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/exam_result")
-public class ExamResultController extends BaseController<ExamResultResponse, List<ExamResultResponse.ExamResultData>> {
+public class ExamResultController extends BaseController<ListExamResultResponse, List<ExamResultResponse.ExamResultData>> {
 
     @Autowired
     private ExamResultService examResultService;
 
     public ExamResultController() {
-        super(ExamResultResponse.class);
+        super(ListExamResultResponse.class);
     }
 
     @GetMapping("/get_exam_results")
@@ -33,11 +34,18 @@ public class ExamResultController extends BaseController<ExamResultResponse, Lis
     }
 
     @PostMapping
-    ResponseEntity<?> addExamResult(ExamResultRequest request) {
+    ResponseEntity<?> addExamResult(@RequestBody ExamResultRequest request) {
         try {
-            examResultService.addExamResult(request);
-            List<ExamResultResponse.ExamResultData> examResultDataList = examResultService.getAllExamResults();
-            return handleSuccess(examResultDataList, "Exam result added successfully", Constants.SUCCESS);
+            if (request.getExamAnswers() == null) {
+                throw new HttpClientErrorException(org.springframework.http.HttpStatus.BAD_REQUEST, "Invalid request data");
+            }
+            Long idResult = examResultService.addExamResult(request);
+            ExamResultResponse.ExamResultData examResultData = examResultService.getExamResultById(idResult);
+            ExamResultResponse response = new ExamResultResponse();
+            response.setData(examResultData);
+            response.setMessage("Exam result added successfully");
+            response.setStatus(Constants.SUCCESS);
+            return ResponseEntity.ok(response);
         } catch (HttpClientErrorException e) {
             return handleException(e);
         }
