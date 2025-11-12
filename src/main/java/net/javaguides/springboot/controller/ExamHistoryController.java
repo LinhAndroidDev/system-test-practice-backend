@@ -20,7 +20,7 @@ public class ExamHistoryController extends BaseController<ExamHistoryResponse, E
         super(ExamHistoryResponse.class);
     }
 
-    @GetMapping("/get_exam_histories")
+    @GetMapping
     ResponseEntity<?> getAllExamAnswers(@RequestParam int examResultId) {
         try {
             ExamHistoryResponse.ExamResultOfAnswer examResults = examResultService.getAllAnswersByExamResultId(examResultId);

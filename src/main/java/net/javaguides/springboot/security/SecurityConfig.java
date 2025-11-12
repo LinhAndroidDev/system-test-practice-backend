@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/api/upload/image/**",
             "/api/exam_result",
             "/api/exam_result/**",
-            "/api/exam_history/get_exam_histories/**"
+            "/api/exam_history/**"
     };
 
     @Autowired
