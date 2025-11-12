@@ -10,6 +10,7 @@ public class ExamResultResponse extends BaseResponse<ExamResultResponse.ExamResu
         private ExamResponse.ExamData exam;
         private int userId;
         private int numberCorrectAnswers;
+        private int numberWrongAnswers;
         private int totalQuestions;
         private String submittedAt;
     }
