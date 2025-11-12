@@ -2,7 +2,7 @@ package net.javaguides.springboot.mapper;
 
 import net.javaguides.springboot.dto.ExamAnswerRequest;
 import net.javaguides.springboot.entity.ExamAnswer;
-import net.javaguides.springboot.response.ExamAnswerResponse;
+import net.javaguides.springboot.response.ExamHistoryResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,6 +12,5 @@ public interface ExamAnswerMapper {
     @Mapping(source = "resultId", target = "resultId")
     ExamAnswer toEntity(ExamAnswerRequest request, Long resultId);
 
-    @Mapping(target = "question", ignore = true)
-    ExamAnswerResponse.ExamAnswerData toExamAnswerData(ExamAnswer examAnswer);
+    ExamHistoryResponse.ExamAnswerData toExamAnswerData(ExamAnswer examAnswer);
 }

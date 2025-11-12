@@ -52,7 +52,7 @@ public class ExamResultController extends BaseController<ListExamResultResponse,
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteExamResult(Long id) {
+    ResponseEntity<?> deleteExamResult(@PathVariable Long id) {
         try {
             int status = examResultService.deleteExamResult(id);
             List<ExamResultResponse.ExamResultData> examResultDataList = examResultService.getAllExamResults();

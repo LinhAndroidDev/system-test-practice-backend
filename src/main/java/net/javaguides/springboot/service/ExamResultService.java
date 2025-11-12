@@ -99,17 +99,15 @@ public class ExamResultService {
         examAnswerRepository.saveAll(answers);
     }
 
-    public ExamAnswerResponse.ExamResultOfAnswer getAllAnswersByExamResultId(int resultId) {
+    public ExamHistoryResponse.ExamResultOfAnswer getAllAnswersByExamResultId(int resultId) {
         ExamResult examResult = examResultRepository.findById((long) resultId).orElse(new ExamResult());
-        List<ExamAnswerResponse.ExamAnswerData> examAnswersData =
+        List<ExamHistoryResponse.ExamAnswerData> examAnswersData =
                 examAnswerRepository.findByResultId(resultId).stream()
-                        .flatMap(examAnswers -> examAnswers.stream()
-                                .map(examAnswerMapper::toExamAnswerData))
+                        .flatMap(examAnswers -> examAnswers.stream().map(examAnswerMapper::toExamAnswerData))
                         .toList();
-        ExamAnswerResponse.ExamResultOfAnswer examResultOfAnswer = new ExamAnswerResponse.ExamResultOfAnswer();
+        ExamHistoryResponse.ExamResultOfAnswer examResultOfAnswer = new ExamHistoryResponse.ExamResultOfAnswer();
         ExamResponse.ExamData examData = examService.getExamById(examResult.getExamId());
-        examResultOfAnswer.setExamResult(examResultMapper.toExamResultData(examResult, examData));
-        examResultOfAnswer.setExamAnswers(examAnswersData);
+        examResultOfAnswer.setExamResult(examData.toExamHistoryData(examAnswersData));
         return examResultOfAnswer;
     }
 
