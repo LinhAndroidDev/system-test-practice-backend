@@ -13,6 +13,7 @@ import net.javaguides.springboot.response.*;
 import net.javaguides.springboot.utils.Constants;
 import net.javaguides.springboot.utils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class ExamResultService {
     private final ExamMapper examMapper;
 
     public List<ExamResultResponse.ExamResultData> getAllExamResults() {
-        return examResultRepository.findAll().stream().map(examResult -> {
+        return examResultRepository.findAll(Sort.by(Sort.Direction.DESC, "submittedAt")).stream().map(examResult -> {
             Exam exam = examRepository.findById((long) examResult.getExamId()).orElse(new Exam());
             Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());
             List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
