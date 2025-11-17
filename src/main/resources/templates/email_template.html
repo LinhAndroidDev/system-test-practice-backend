@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Email Notification</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td {font-family: Arial, sans-serif !important;}
+    </style>
+    <![endif]-->
+</head>
+<body style="margin: 0; padding: 0; background-color: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+    <!-- Preheader Text -->
+    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;" th:text="${title}">
+        Cập nhật Quick Practice để trải nghiệm những tính năng mới nhất!
+    </div>
+    
+    <!-- Main Container -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f5f7fa; padding: 40px 0;">
+        <tr>
+            <td align="center">
+                <!-- Email Container -->
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                    
+                    <!-- Header with Gradient -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 0;">
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td align="center" style="padding: 50px 30px 40px;">
+                                        <!-- Logo/Icon -->
+                                        <div style="width: 80px; height: 80px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);">
+                                            <span style="font-size: 40px;">📱</span>
+                                        </div>
+                                        <!-- Title -->
+                                        <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff; line-height: 1.2; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" th:text="${title}">
+                                            Thông báo quan trọng
+                                        </h1>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Content Section -->
+                    <tr>
+                        <td style="padding: 50px 40px;">
+                            <!-- Greeting -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td style="padding-bottom: 20px;">
+                                        <p style="margin: 0; font-size: 18px; color: #2d3748; line-height: 1.6; font-weight: 500;">
+                                            Xin chào <span style="color: #667eea; font-weight: 700;" th:text="${username}">Người dùng</span>! 👋
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Message Content -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td style="padding: 30px; background-color: #f7fafc; border-radius: 12px; border-left: 4px solid #667eea;">
+                                        <p style="margin: 0 0 15px 0; font-size: 16px; color: #4a5568; line-height: 1.8;" th:utext="${message}">
+                                            Cập nhật Quick Practice để trải nghiệm những tính năng mới nhất!<br>
+                                            Vui lòng truy cập vào CH Play để cập nhật ứng dụng và nhận những phần quà hấp dẫn.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Features List -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 30px;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0 0 15px 0; font-size: 16px; color: #2d3748; font-weight: 600;">
+                                            ✨ Những cải tiến mới:
+                                        </p>
+                                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                                <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                                                    <p style="margin: 0; font-size: 15px; color: #4a5568; line-height: 1.6;">
+                                                        🚀 <strong style="color: #2d3748;">Hiệu năng tối ưu</strong> - Trải nghiệm mượt mà hơn
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                                                    <p style="margin: 0; font-size: 15px; color: #4a5568; line-height: 1.6;">
+                                                        🎨 <strong style="color: #2d3748;">Giao diện mới</strong> - Thiết kế hiện đại và thân thiện
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 12px 0;">
+                                                    <p style="margin: 0; font-size: 15px; color: #4a5568; line-height: 1.6;">
+                                                        🎁 <strong style="color: #2d3748;">Phần quà hấp dẫn</strong> - Nhiều ưu đãi đang chờ bạn
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- CTA Button -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 40px;">
+                                <tr>
+                                    <td align="center">
+                                        <a th:href="${link}" href="#" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; border-radius: 50px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s ease;">
+                                            📲 Cập nhật ngay
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Divider -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 40px;">
+                                <tr>
+                                    <td style="border-top: 1px solid #e2e8f0;"></td>
+                                </tr>
+                            </table>
+
+                            <!-- Additional Info -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 30px;">
+                                <tr>
+                                    <td style="padding: 20px; background-color: #edf2f7; border-radius: 8px;">
+                                        <p style="margin: 0; font-size: 14px; color: #718096; line-height: 1.6; text-align: center;">
+                                            💡 <strong style="color: #2d3748;">Lưu ý:</strong> Đảm bảo bạn đã đăng nhập vào tài khoản Google Play của mình để nhận được phần quà.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #2d3748; padding: 40px 30px;">
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <!-- Social Links -->
+                                <tr>
+                                    <td align="center" style="padding-bottom: 25px;">
+                                        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; text-align: center; line-height: 40px; text-decoration: none;">
+                                                        <span style="color: #ffffff; font-size: 18px;">📘</span>
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; text-align: center; line-height: 40px; text-decoration: none;">
+                                                        <span style="color: #ffffff; font-size: 18px;">🐦</span>
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; text-align: center; line-height: 40px; text-decoration: none;">
+                                                        <span style="color: #ffffff; font-size: 18px;">📷</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Footer Text -->
+                                <tr>
+                                    <td align="center" style="padding-bottom: 20px;">
+                                        <p style="margin: 0; font-size: 14px; color: #a0aec0; line-height: 1.6;">
+                                            © 2025 <strong style="color: #ffffff;">Quick Practice</strong>. All rights reserved.
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Unsubscribe Link -->
+                                <tr>
+                                    <td align="center">
+                                        <p style="margin: 0; font-size: 12px; color: #718096;">
+                                            <a href="#" style="color: #a0aec0; text-decoration: underline;">Hủy đăng ký nhận email</a> | 
+                                            <a href="#" style="color: #a0aec0; text-decoration: underline;">Chính sách bảo mật</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Spacer -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 20px;">
+                    <tr>
+                        <td align="center" style="padding: 0 20px;">
+                            <p style="margin: 0; font-size: 12px; color: #a0aec0; line-height: 1.6;">
+                                Email này được gửi tự động, vui lòng không trả lời.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

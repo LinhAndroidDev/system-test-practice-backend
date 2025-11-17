@@ -28,7 +28,8 @@ public class SecurityConfig {
             "/api/upload/image/**",
             "/api/exam_result",
             "/api/exam_result/**",
-            "/api/exam_history/**"
+            "/api/exam_history/**",
+            "/api/email/**"
     };
 
     @Autowired
@@ -51,6 +52,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/exam_result").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/email").permitAll()
                         .requestMatchers(PUBLIC_URLS).permitAll()
                         .anyRequest().authenticated()
                 )
