@@ -56,6 +56,20 @@ public class ExamResultService {
         }).toList();
     }
 
+
+    public List<ExamResultResponse.ExamResultData> getAllExamResultsByUserId(int userId) {
+        return examResultRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "submittedAt"))
+                .orElse(List.of()).stream().map(examResult -> {
+                    Exam exam = examRepository.findById((long) examResult.getExamId()).orElse(new Exam());
+                    Subject subjectExam = subjectRepository.findById((long) exam.getSubjectId()).orElse(new Subject());
+                    List<Integer> idQuestions = ConvertUtils.convertStringToListNumber(exam.getQuestions());
+                    List<QuestionResponse.QuestionData> questionData = examService.getAllQuestionsByIds(idQuestions, subjectExam.getId());
+                    ExamResponse.ExamData examData = examMapper.toExamData(exam, subjectExam, questionData);
+
+                    return examResultMapper.toExamResultData(examResult, examData);
+                }).toList();
+    }
+
     public ExamResultResponse.ExamResultData getExamResultById(Long idResult) {
         ExamResult examResult = examResultRepository.findById(idResult).orElse(new ExamResult());
         Exam exam = examRepository.findById((long) examResult.getExamId()).orElse(new Exam());

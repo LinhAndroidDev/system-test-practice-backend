@@ -24,9 +24,9 @@ public class ExamResultController extends BaseController<ListExamResultResponse,
     }
 
     @GetMapping("/get_exam_results")
-    ResponseEntity<?> getAllExamResults() {
+    ResponseEntity<?> getAllExamResults(@RequestParam int userId) {
         try {
-            List<ExamResultResponse.ExamResultData> examResultDataList = examResultService.getAllExamResults();
+            List<ExamResultResponse.ExamResultData> examResultDataList = examResultService.getAllExamResultsByUserId(userId);
             return handleSuccess(examResultDataList, "Success", Constants.SUCCESS);
         } catch (HttpClientErrorException e) {
             return handleException(e);
