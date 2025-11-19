@@ -9,6 +9,7 @@ import net.javaguides.springboot.response.RegisterResponse;
 import net.javaguides.springboot.security.JwtUtil;
 import net.javaguides.springboot.service.UserService;
 import net.javaguides.springboot.utils.Constants;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request){
         try {
-            int result = userService.register(request);
-            RegisterResponse response = getRegisterResponse(result);
+            Pair<Integer, String> r = userService.register(request);
+            RegisterResponse response = getRegisterResponse(r.a, r.b);
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException e) {
             RegisterResponse response = new RegisterResponse();
@@ -39,15 +40,12 @@ public class AuthController {
         }
     }
 
-    private static RegisterResponse getRegisterResponse(int result) {
+    private static RegisterResponse getRegisterResponse(int result, String message) {
         RegisterResponse response = new RegisterResponse();
-        String message;
         int status;
         if (result == 0) {
-            message = "Email already exists!";
             status = Constants.DATA_CONFLICT;
         } else {
-            message = "Registration successful!";
             status = Constants.SUCCESS;
         }
         response.setData(new RegisterResponse.RegisterData(result));
@@ -59,21 +57,33 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         try {
-            User user = userService.login(request.getEmail(), request.getPassword());
-            String token = jwtUtil.generateToken(user.getEmail());
-            LoginResponse.AuthData authData = new LoginResponse.AuthData(token);
-            LoginResponse.LoginData loginData = new LoginResponse.LoginData(user.getId().intValue(), user.getName(), user.getRole(), authData);
+            Pair<User, String> r = userService.login(request.getEmail(), request.getPassword());
+            User user = r.a;
+            String message = r.b;
             LoginResponse response = new LoginResponse();
-            response.setData(loginData);
-            response.setMessage("Login successful!");
-            response.setStatus(Constants.SUCCESS);
+            if (user != null) {
+                String token = jwtUtil.generateToken(user.getEmail());
+                LoginResponse.AuthData authData = new LoginResponse.AuthData(token);
+                LoginResponse.LoginData loginData = new LoginResponse.LoginData(user.getId().intValue(), user.getName(), user.getRole(), authData);
+                response.setData(loginData);
+                response.setMessage(message);
+                response.setStatus(Constants.SUCCESS);
+            } else {
+                response.setData(null);
+                response.setMessage(message);
+                response.setStatus(Constants.FAILURE);
+            }
             return ResponseEntity.ok(response);
         } catch (HttpClientErrorException e) {
-            LoginResponse response = new LoginResponse();
-            response.setData(null);
-            response.setMessage(e.getMessage());
-            response.setStatus(e.getStatusCode().value());
-            return ResponseEntity.badRequest().body(response);
+            return handleFailLogin(e.getMessage(), e.getStatusCode().value());
         }
+    }
+
+    private ResponseEntity<?> handleFailLogin(String message, int statusCode) {
+        LoginResponse response = new LoginResponse();
+        response.setData(null);
+        response.setMessage(message);
+        response.setStatus(statusCode);
+        return ResponseEntity.badRequest().body(response);
     }
 }
